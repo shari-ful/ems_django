@@ -43,13 +43,13 @@ class CandidateDetails(models.Model):
     emailid = models.CharField(max_length=70, null=True)
     contact_number = models.CharField(max_length=15, null=True)
     profileimg = models.CharField(max_length=100, null=True)
-    cand_resume = models.CharField(max_length=100, null=True, db_column='cand_resume', help_text='resume file location')
+    cand_resume = models.CharField(max_length=100, null=True)
     cand_resume_deletedby = models.IntegerField(null=True)
     qualification = models.CharField(max_length=100)
     experience = models.FloatField(null=True)
     skillset = models.TextField(null=True)
     education_summary = models.TextField(null=True)
-    summary = models.TextField(null=True, help_text='instead of resume')
+    summary = models.TextField(null=True)
     CAND_STATUS_CHOICES = [
         ('Shortlisted', 'Shortlisted'),
         ('Selected', 'Selected'),

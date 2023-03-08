@@ -23,17 +23,6 @@ class BgAgencyList(models.Model):
     class Meta:
         db_table = 'bg_agencylist'
 
-class BGCheckComments(models.Model):
-    bgdet = models.ForeignKey('BGCheckDetails', on_delete=models.CASCADE, null=True)
-    comment = models.TextField()
-    from_user = models.ForeignKey(User, related_name='bgcheckcomments_from', on_delete=models.CASCADE)
-    to_user = models.ForeignKey(User, related_name='bgcheckcomments_to', on_delete=models.CASCADE)
-    createddate = models.DateTimeField(null=True)
-    isactive = models.BooleanField(default=True)
-
-    class Meta:
-        db_table = 'bg_checkcomments'
-
 class BgCheckDetails(models.Model):
     specimen_id = models.IntegerField(null=True)
     flag = models.BooleanField(default=True, help_text='1 - employee, 2- candidate')
@@ -54,7 +43,18 @@ class BgCheckDetails(models.Model):
     recentlycommenteddate = models.DateTimeField(null=True)
 
     class Meta:
-        db_table = 'main_bgcheckdetails'
+        db_table = 'bg_checkdetails'
+class BGCheckComments(models.Model):
+    bgdet = models.ForeignKey(BgCheckDetails, on_delete=models.CASCADE, null=True)
+    comment = models.TextField()
+    from_user = models.ForeignKey(User, on_delete=models.CASCADE)
+    to_user = models.ForeignKey(User, on_delete=models.CASCADE)
+    createddate = models.DateTimeField(null=True)
+    isactive = models.BooleanField(default=True)
+
+    class Meta:
+        db_table = 'bg_checkcomments'
+
 
 class BgChecksSummary(models.Model):
     detail_id = models.BigIntegerField(null=True)
@@ -80,7 +80,7 @@ class BgChecksSummary(models.Model):
     isactive_text = models.CharField(max_length=50, default='Active')
 
     class Meta:
-        db_table = 'main_bgchecks_summary'
+        db_table = 'bg_checkssummary'
 
 class BgCheckType(models.Model):
     type = models.CharField(max_length=150)
@@ -92,7 +92,7 @@ class BgCheckType(models.Model):
     isactive = models.BooleanField(default=True)
 
     class Meta:
-        db_table = 'main_bgchecktype'
+        db_table = 'bg_checktype'
 
 class BgPocDetails(models.Model):
     bg_agencyid = models.PositiveIntegerField(null=True)
@@ -112,4 +112,4 @@ class BgPocDetails(models.Model):
     isactive = models.BooleanField(default=True)
 
     class Meta:
-        db_table = 'main_bgpocdetails'
+        db_table = 'bg_pocdetails'

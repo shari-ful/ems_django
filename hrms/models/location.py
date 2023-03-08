@@ -2,12 +2,12 @@ from django.db import models
 
 
 class City(models.Model):
-    country = models.ForeignKey('main.Country', on_delete=models.CASCADE)
-    state = models.ForeignKey(State, on_delete=models.CASCADE)
+    country = models.CharField(max_length=300, null=True)
+    state = models.CharField(max_length=300, null=True)
     name = models.CharField(max_length=255)
     city_org_id = models.PositiveIntegerField()
-    created_by = models.ForeignKey('auth.User', on_delete=models.CASCADE, related_name='cities_created')
-    modified_by = models.ForeignKey('auth.User', on_delete=models.CASCADE, related_name='cities_modified')
+    created_by = models.CharField(max_length=300, null=True)
+    modified_by = models.CharField(max_length=300, null=True)
     created_date = models.DateTimeField(auto_now_add=True)
     modified_date = models.DateTimeField(auto_now=True)
     is_active = models.BooleanField(default=True)

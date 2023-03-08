@@ -1,10 +1,32 @@
 from django.db import models
-from .departments import Department
 from django.contrib.auth.models import User
 
+class Employee(models.Model):
+    employee_id = models.BigIntegerField(null=True)
+    employee_name = models.CharField(max_length=200, null=False)
+    date_of_joining = models.DateField(default='0000-00-00')
+    date_of_leaving = models.DateField(default='0000-00-00')
+    reporting_manager = models.TextChoices()
+    emp_status_id = models.PositiveIntegerField(null=True)
+    businessunit_id = models.PositiveIntegerField(null=True)
+    department_id = models.PositiveIntegerField(null=True)
+    jobtitle_id = models.PositiveIntegerField(null=True)
+    position_id = models.PositiveIntegerField(null=True)
+    years_exp = models.CharField(max_length=20, null=True)
+    holiday_group = models.PositiveIntegerField(null=True)
+    prefix_id = models.PositiveIntegerField(null=True)
+    extension_number = models.CharField(max_length=20, null=True)
+    office_number = models.CharField(max_length=100, null=True)
+    office_faxnumber = models.CharField(max_length=100, null=True)
+    createdby = models.PositiveIntegerField(null=True)
+    modifiedby = models.PositiveIntegerField(null=True)
+    createddate = models.DateTimeField(null=True)
+    modifieddate = models.DateTimeField(null=True)
+    isactive = models.BooleanField(default=True)
+    is_orghead = models.BooleanField(default=False)
 
-departments = Department.objects.all()
-MANAGER = [(department.manager, department.manager) for department in departments]
+    class Meta:
+        db_table = 'employees'
 
     
 class MainEducationLevelCode(models.Model):
@@ -17,7 +39,7 @@ class MainEducationLevelCode(models.Model):
     isactive = models.BooleanField(default=True)
 
     class Meta:
-        db_table = 'education_levelcode'
+        db_table = 'education_level_code'
 
 class MainEEOCCategory(models.Model):
     eeoccategory = models.CharField(max_length=255)
@@ -34,10 +56,10 @@ class MainEEOCCategory(models.Model):
 
 class EmployeeReporting(models.Model):
     emp = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-    reporting_manager = models.ForeignKey(User, on_delete=models.CASCADE, related_name='reportees', null=True)
+    reporting_manager = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     is_active = models.BooleanField(default=True)
-    created_by = models.ForeignKey(User, on_delete=models.SET_NULL, related_name='employee_reporting_created_by', null=True)
-    modified_by = models.ForeignKey(User, on_delete=models.SET_NULL, related_name='employee_reporting_modified_by', null=True)
+    created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    modified_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     created_date = models.DateTimeField(auto_now_add=True)
     modified_date = models.DateTimeField(auto_now=True)
 
@@ -69,7 +91,6 @@ class EmpAdditionalDetails(models.Model):
 
     class Meta:
         db_table = 'empadditional_details'
-        verbose_name_plural = 'Employee Additional Details'
 
 class EmpCertificationDetails(models.Model):
     user_id = models.BigIntegerField(null=True)
@@ -116,14 +137,14 @@ class EmpCommunicationDetails(models.Model):
         verbose_name_plural = 'Employee Communication Details'
 
 class EmpDependencyDetails(models.Model):
-    user = models.ForeignKey('User', on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     dependent_name = models.CharField(max_length=100, null=True)
     dependent_relation = models.CharField(max_length=100, null=True)
     dependent_custody = models.CharField(max_length=100, null=True)
     dependent_dob = models.DateField(null=True)
     dependent_age = models.PositiveIntegerField(null=True)
-    createdby = models.ForeignKey('User', on_delete=models.CASCADE, related_name='empdependencydetails_created', null=True)
-    modifiedby = models.ForeignKey('User', on_delete=models.CASCADE, related_name='empdependencydetails_modified', null=True)
+    createdby = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    modifiedby = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     createddate = models.DateTimeField(auto_now_add=True)
     modifieddate = models.DateTimeField(auto_now=True)
     isactive = models.BooleanField(default=True)
@@ -132,13 +153,13 @@ class EmpDependencyDetails(models.Model):
         db_table = 'empdependency_details'
 
 class EmpDisabilityDetails(models.Model):
-    user = models.ForeignKey('main.User', on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     disability_name = models.CharField(max_length=50, null=True)
     disability_type = models.CharField(max_length=100, null=True)
     other_disability_type = models.CharField(max_length=100, null=True)
     disability_description = models.TextField(null=True)
-    createdby = models.ForeignKey('main.User', on_delete=models.SET_NULL, related_name='disability_createdby', null=True)
-    modifiedby = models.ForeignKey('main.User', on_delete=models.SET_NULL, related_name='disability_modifiedby', null=True)
+    createdby = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    modifiedby = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     createddate = models.DateTimeField(null=True)
     modifieddate = models.DateTimeField(null=True)
     isactive = models.BooleanField(default=True)
@@ -147,7 +168,7 @@ class EmpDisabilityDetails(models.Model):
         db_table = 'empdisability_details'
 
 class EmpEducationDetails(models.Model):
-    user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     educationlevel = models.PositiveIntegerField(null=True)
     institution_name = models.CharField(max_length=255, null=True)
     course = models.CharField(max_length=100, null=True)
@@ -164,7 +185,7 @@ class EmpEducationDetails(models.Model):
         db_table = 'empeducation_details'
 
 class EmpExperianceDetails(models.Model):
-    user = models.ForeignKey('User', on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     comp_name = models.CharField(max_length=100)
     comp_website = models.CharField(max_length=255)
     designation = models.CharField(max_length=100)
@@ -174,14 +195,14 @@ class EmpExperianceDetails(models.Model):
     reference_name = models.CharField(max_length=100)
     reference_contact = models.CharField(max_length=100)
     reference_email = models.CharField(max_length=100)
-    createdby = models.ForeignKey('User', related_name='empexperiancedetails_createdby', on_delete=models.SET_NULL, null=True)
-    modifiedby = models.ForeignKey('User', related_name='empexperiancedetails_modifiedby', on_delete=models.SET_NULL, null=True)
+    createdby = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    modifiedby = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     createddate = models.DateTimeField(auto_now_add=True)
     modifieddate = models.DateTimeField(auto_now=True)
     isactive = models.BooleanField(default=True)
 
     class Meta:
-        db_table = 'main_empexperiancedetails'
+        db_table = 'empexperiance_details'
 
 class EmpHoliday(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -229,34 +250,6 @@ class EmployeeDocuments(models.Model):
     class Meta:
         db_table = 'employee_documents'
 
-
-
-class Employee(models.Model):
-    user_id = models.BigIntegerField(null=True)
-    date_of_joining = models.DateField(default='0000-00-00')
-    date_of_leaving = models.DateField(default='0000-00-00')
-    reporting_manager = models.BigIntegerField(null=True)
-    emp_status_id = models.PositiveIntegerField(null=True)
-    businessunit_id = models.PositiveIntegerField(null=True)
-    department_id = models.PositiveIntegerField(null=True)
-    jobtitle_id = models.PositiveIntegerField(null=True)
-    position_id = models.PositiveIntegerField(null=True)
-    years_exp = models.CharField(max_length=20, null=True)
-    holiday_group = models.PositiveIntegerField(null=True)
-    prefix_id = models.PositiveIntegerField(null=True)
-    extension_number = models.CharField(max_length=20, null=True)
-    office_number = models.CharField(max_length=100, null=True)
-    office_faxnumber = models.CharField(max_length=100, null=True)
-    createdby = models.PositiveIntegerField(null=True)
-    modifiedby = models.PositiveIntegerField(null=True)
-    createddate = models.DateTimeField(null=True)
-    modifieddate = models.DateTimeField(null=True)
-    isactive = models.BooleanField(default=True)
-    is_orghead = models.BooleanField(default=False)
-
-    class Meta:
-        db_table = 'employees'
-        unique_together = [('user_id',)]
 
 class EmployeeLeaveType(models.Model):
     leavetype = models.CharField(max_length=255, null=True)

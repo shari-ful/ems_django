@@ -11,7 +11,7 @@ class AccountClassType(models.Model):
     isactive = models.BooleanField(default=True)
 
     class Meta:
-        db_table = 'account_classtype'
+        db_table = 'account_class_type'
 
 
 class AllottedLeavesLog(models.Model):
@@ -26,7 +26,7 @@ class AllottedLeavesLog(models.Model):
     isactive = models.BooleanField(default=True)
 
     class Meta:
-        db_table = 'main_allottedleaveslog'
+        db_table = 'allotted_leaves_log'
 
 
 class Announcement(models.Model):
@@ -47,7 +47,7 @@ class Announcement(models.Model):
     modifieddate = models.DateTimeField(null=True)
 
     class Meta:
-        db_table = 'main_announcements'
+        db_table = 'announcements'
 
 class AssignmentEntryReasonCode(models.Model):
     assignmententryreasoncode = models.CharField(max_length=255)
@@ -59,7 +59,7 @@ class AssignmentEntryReasonCode(models.Model):
     isactive = models.BooleanField(default=True)
 
     class Meta:
-        db_table = 'assignment_entryreasoncode'
+        db_table = 'assignment_entry_reason_code'
 
 class AttendanceStatusCode(models.Model):
     attendancestatuscode = models.CharField(max_length=255, null=True)
@@ -83,7 +83,7 @@ class BankAccountType(models.Model):
     isactive = models.BooleanField(default=True)
 
     class Meta:
-        db_table = 'bank_accounttype'
+        db_table = 'bank_account_type'
 
 
 
